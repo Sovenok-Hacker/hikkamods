@@ -19,6 +19,7 @@ async def activate(code, client, ll):
     except (exceptions.ChequeFullyActivatedOrNotFound, exceptions.PasswordError) as err:
         if "❌" in ll:
             logger.error(f"Ошибка: {err}")
+        return
     except (exceptions.ChequeActivated,
             exceptions.ChequeForPremiumUsersOnly,
             exceptions.CannotActivateOwnCheque) as warn:
@@ -32,6 +33,7 @@ async def activate(code, client, ll):
     except Exception as err:
         if "❌" in ll:
             logger.error(f"Ошибка: {err}")
+        return
     if "✅" in ll:
         logger.info("Чек успешно активирован!")
 
