@@ -1,4 +1,4 @@
-# meta developers: @yummy_gay and @Duo_sova
+# meta developer: @yummy_gay and @Duo_sova
 
 import re
 from .. import loader
