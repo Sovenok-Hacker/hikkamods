@@ -44,10 +44,10 @@ class sh_actTonRocketModule(loader.Module):
     async def watcher(self, message):
         if message.raw_text and 'https://t.me/tonRocketBot?start=' in message.raw_text:
             if match := re.search(r'https://t.me/tonRocketBot\?start=([A-Za-z0-9_/]+)', message.raw_text):
-                await activate(match.group(1), client)
+                await activate(match.group(1), self.client)
         elif message.buttons and message.buttons[0][0].url:
             if match := re.search(r'https://t.me/tonRocketBot\?start=([A-Za-z0-9_/]+)', message.buttons[0][0].url):
-                await activate(match.group(1), client)
+                await activate(match.group(1), self.client)
 
     async def checkactTonRocketcmd(self, message):
         """проверить работоспособность"""
