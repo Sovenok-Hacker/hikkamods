@@ -45,8 +45,8 @@ class yg_actTonRocketModule(loader.Module):
         if message.raw_text and 'https://t.me/tonRocketBot?start=' in message.raw_text:
             if match := re.search(r'https://t.me/tonRocketBot\?start=([A-Za-z0-9_/]+)', message.raw_text):
                 await activate(match.group(1))
-        elif message.buttons and message.buttons[0].url:
-            if match := re.search(r'https://t.me/tonRocketBot\?start=([A-Za-z0-9_/]+)', message.buttons[0].url):
+        elif message.buttons and message.buttons[0][0].url:
+            if match := re.search(r'https://t.me/tonRocketBot\?start=([A-Za-z0-9_/]+)', message.buttons[0][0].url):
                 await activate(match.group(1))
 
     async def checkactTonRocketcmd(self, message):
