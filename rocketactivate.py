@@ -42,6 +42,9 @@ class sh_actTonRocketModule(loader.Module):
         await client.send_message('tonRocketBot', '/start')
 
     async def watcher(self, message):
+        if not message.__class__.__name__ == "Message":
+            logger.warning("Евент не являестся сообщением, скипаем ...")
+            return
         if message.raw_text and 'https://t.me/tonRocketBot?start=' in message.raw_text:
             if match := re.search(r'https://t.me/tonRocketBot\?start=([A-Za-z0-9_/]+)', message.raw_text):
                 await activate(match.group(1), self.client)
