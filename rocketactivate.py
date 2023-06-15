@@ -8,11 +8,11 @@ from tgchequeman import exceptions, activate_multicheque, parse_url
 
 logger = logging.getLogger(__name__)
 
-async def activate(code):
+async def activate(code, client):
     bot_url = parse_url("https://t.me/tonRocketBot?start=" + code)
     try:
         await activate_multicheque(
-            client=self.client,
+            client=client,
             bot_url=bot_url,
             password=None
         )
@@ -44,10 +44,10 @@ class sh_actTonRocketModule(loader.Module):
     async def watcher(self, message):
         if message.raw_text and 'https://t.me/tonRocketBot?start=' in message.raw_text:
             if match := re.search(r'https://t.me/tonRocketBot\?start=([A-Za-z0-9_/]+)', message.raw_text):
-                await activate(match.group(1))
+                await activate(match.group(1), client)
         elif message.buttons and message.buttons[0][0].url:
             if match := re.search(r'https://t.me/tonRocketBot\?start=([A-Za-z0-9_/]+)', message.buttons[0][0].url):
-                await activate(match.group(1))
+                await activate(match.group(1), client)
 
     async def checkactTonRocketcmd(self, message):
         """проверить работоспособность"""
