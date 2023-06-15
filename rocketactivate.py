@@ -30,7 +30,7 @@ async def activate(code):
         logger.error(f"Ошибка: {err}")
 
 @loader.tds
-class yg_actTonRocketModule(loader.Module):
+class sh_actTonRocketModule(loader.Module):
     """Активатор чеков @tonRocketBot с автоматической подпиской (и если вы не премиум пользователь автоматически решается капча)"""
 
     strings = {
