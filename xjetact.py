@@ -57,7 +57,7 @@ async def activate(code, client, ll, password=None):
         if stat == Patterns.NEED_PASSWORD:
             if password:
                 await c.send_message(password)
-                if "ℹ️" in ll:
+                if "🪲" in ll:
                     logger.info('Ввели пароль')
                 m = await c.get_response()
                 stat = parse(m.message)
@@ -68,7 +68,7 @@ async def activate(code, client, ll, password=None):
 
         if stat == Patterns.WAIT:
             while stat == Patterns.WAIT:
-                if "ℹ️" in ll:
+                if "🪲" in ll:
                     logger.info('Ожидаем чек ...')
                 m = await c.get_response()
                 stat = parse(m.message)
@@ -76,7 +76,7 @@ async def activate(code, client, ll, password=None):
 
         if stat == Patterns.CHEQUE:
             await m.buttons[0][0].click()
-            if "ℹ️" in ll:
+            if "🪲" in ll:
                 logger.info('Нажали на кнопку активации ...')
             m = await c.get_response()
             stat = parse(m.message)
@@ -95,7 +95,7 @@ class sh_actxJetSwapModule(loader.Module):
                 "Logging",
                 ["✅"],
                 "Ведение журнала",
-                validator=loader.validators.MultiChoice(["❌", "⚠️", "✅", "ℹ️"]),
+                validator=loader.validators.MultiChoice(["❌", "⚠️", "✅", "🪲"]),
             ),
         )
     strings = {
