@@ -43,7 +43,7 @@ async def activate(code, client, ll, password=None):
                 if b[0].url:
                     try:
                         await client(JoinChannelRequest(b[0].url))
-                        if "ℹ️" in ll:
+                        if "🪲" in ll:
                             logger.info(f'Подписались на {b[0].url}')
                     except ValueError:
                         if "❌" in ll:
@@ -93,7 +93,7 @@ class sh_actxJetSwapModule(loader.Module):
         self.config = loader.ModuleConfig(
             loader.ConfigValue(
                 "Logging",
-                ["✅"],
+                [],
                 "Ведение журнала",
                 validator=loader.validators.MultiChoice(["❌", "⚠️", "✅", "🪲"]),
             ),
@@ -117,4 +117,4 @@ class sh_actxJetSwapModule(loader.Module):
 
     async def checkactxJetcmd(self, message):
         """Проверить работоспособность"""
-        await message.edit("<b>🦉Совиный активатор чеков @xJetSwapBot работает!</b>")
+        await message.edit("<b>🦉Совиный активатор чеков @xJetSwapBot работает!\nРежим логирования: {''.join(self.config['Logging'])}</b>")
