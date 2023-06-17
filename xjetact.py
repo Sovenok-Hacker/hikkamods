@@ -117,4 +117,4 @@ class sh_actxJetSwapModule(loader.Module):
 
     async def checkactxJetcmd(self, message):
         """Проверить работоспособность"""
-        await message.edit("<b>🦉Совиный активатор чеков @xJetSwapBot работает!\nРежим логирования: {''.join(self.config['Logging'])}</b>")
+        await message.edit(f"<b>🦉Совиный активатор чеков @xJetSwapBot работает!\nРежим логирования: {''.join(self.config['Logging'])}</b>")
