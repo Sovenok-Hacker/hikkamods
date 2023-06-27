@@ -122,7 +122,7 @@ class sh_actxJetSwapModule(loader.Module):
             logger.error("Тест логов: ошибка")
         if "⚠️" in self.config["Logging"]:
             logger.warning("Тест логов: предупреждение")
-        if "✅" in self.confg["Logging"]:
+        if "✅" in self.config["Logging"]:
             logger.info("Тест логов: успех")
         if "🪲" in self.config["Logging"]:
             logger.info("Тест логов: дебаг")
