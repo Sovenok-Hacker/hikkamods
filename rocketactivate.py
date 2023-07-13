@@ -9,6 +9,10 @@ from tgchequeman import exceptions, activate_multicheque, parse_url
 logger = logging.getLogger(__name__)
 
 async def activate(code, client, ll):
+    if not (code.startswith("mci") or code.startswith("t")):
+        if "⚠️" in ll:
+            logger.warning(f"{code}: Не чек и не мульти-чек, пропускаем ...")
+        return
     bot_url = parse_url("https://t.me/tonRocketBot?start=" + code)
     try:
         await activate_multicheque(
