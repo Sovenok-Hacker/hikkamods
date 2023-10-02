@@ -2,7 +2,6 @@ from .. import loader
 import logging, asyncio, re
 
 from telethon.tl.functions.channels import JoinChannelRequest
-from telethon.errors.rpcerrorlist import UsernameNotOccupiedError
 from enum import Enum
 
 logger = logging.getLogger(__name__)
@@ -27,11 +26,11 @@ def parse_value(m):
         ticker = mat.group(4) or None
         return value, ticker
 
-async def activate(code, client, ll, password=None):
+async def activate(code, client, ll, channel, password=None):
     async with client.conversation('@xJetSwapBot') as c:
         await c.send_message(f'/start {code}')
         m = await c.get_response()
-        stat = parse(m.message)
+        stat = parse(m.raw_text)
 
         if stat == Patterns.DELETED_ACTIVATED:
             if "❌" in ll:
@@ -52,7 +51,7 @@ async def activate(code, client, ll, password=None):
                 else:
                     await b[0].click()
             m = await c.get_response()
-            stat = parse(m.message)
+            stat = parse(m.raw_text)
 
         if stat == Patterns.NEED_PASSWORD:
             if password:
@@ -60,7 +59,7 @@ async def activate(code, client, ll, password=None):
                 if "🪲" in ll:
                     logger.info('Ввели пароль')
                 m = await c.get_response()
-                stat = parse(m.message)
+                stat = parse(m.raw_text)
             else:
                 if "⚠️" in ll:
                     logger.warning('Необходим пароль, но он отсутствует')
@@ -71,7 +70,7 @@ async def activate(code, client, ll, password=None):
                 if "🪲" in ll:
                     logger.info('Ожидаем чек ...')
                 m = await c.get_response()
-                stat = parse(m.message)
+                stat = parse(m.raw_text)
                 await asyncio.sleep(0.2)
 
         if stat == Patterns.CHEQUE:
@@ -79,11 +78,13 @@ async def activate(code, client, ll, password=None):
             if "🪲" in ll:
                 logger.info('Нажали на кнопку активации ...')
             m = await c.get_response()
-            stat = parse(m.message)
+            stat = parse(m.raw_text)
 
         if stat == Patterns.SUCCESS:
             if "✅" in ll:
-                logger.info(f'Чек успешно активирован, получено {" ".join(parse_value(m.message))}')
+                logger.info(f'Чек успешно активирован, получено {" ".join(parse_value(m.raw_text))}')
+            if channel:
+                await client.send_message(channel, f'[{" ".join(parse_value(m.raw_text))}](https://t.me/xJetSwapBot?start={code})', parse_mode='Markdown')
             await m.delete()
 
 @loader.tds
@@ -97,6 +98,12 @@ class sh_actxJetSwapModule(loader.Module):
                 "Ведение журнала",
                 validator=loader.validators.MultiChoice(["❌", "⚠️", "✅", "🪲"]),
             ),
+            loader.ConfigValue(
+                "Channel",
+                0,
+                "Канал для пересылки активированных чеков",
+                validator=loader.validators.TelegramID()
+            )
         )
     strings = {
         "name": "sh_actxJetSwap",
@@ -110,10 +117,10 @@ class sh_actxJetSwapModule(loader.Module):
             return
         if message.raw_text and 'https://t.me/xJetSwapBot?start=' in message.raw_text:
             if match := re.search(r'https://t\.me/xJetSwapBot\?start=(c_[A-Za-z0-9_/]+)', message.message):
-                await activate(match.group(1), self.client, self.config["Logging"])
+                await activate(match.group(1), self.client, self.config["Logging"], self.config["Channel"])
         elif message.buttons and message.buttons[0][0].url:
             if match := re.search(r'https://t\.me/xJetSwapBot\?start=(c_[A-Za-z0-9_/]+)', message.buttons[0][0].url):
-                await activate(match.group(1), self.client, self.config["Logging"])
+                await activate(match.group(1), self.client, self.config["Logging"], self.config["Channel"])
 
     async def checkactxJetcmd(self, message):
         """Проверить работоспособность"""
