@@ -101,8 +101,8 @@ class sh_actxJetSwapModule(loader.Module):
             loader.ConfigValue(
                 "Channel",
                 0,
-                "Канал для пересылки активированных чеков",
-                validator=loader.validators.TelegramID()
+                "ID канал для пересылки активированных чеков",
+                validator=loader.validators.Integer()
             )
         )
     strings = {
